@@ -1,0 +1,28 @@
+.centerClass {
+  display: flex;
+  justify-content: center;
+}
+.navbar-text {
+  color: black !important;
+}
+.botonFooter {
+  border-radius: 10rem;
+  color: aliceblue;
+  height: 40px;
+  width: 300px;
+  /* margin-right: 10px;
+  margin-left: 10px; */
+}
+.iconPosition {
+  margin-right: 5px;
+}
+@media (max-width: 575.98px) {
+  .botonFooter {
+    width: 150px;
+  }
+}
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .botonFooter {
+    width: 100px;
+  }
+}
