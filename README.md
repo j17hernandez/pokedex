@@ -1,5 +1,13 @@
 # pokedex
 
+# Preview Image
+### Tamaño Web
+![image](https://user-images.githubusercontent.com/57992471/153250363-94e25bca-bbf2-4dd7-b07c-94bcbca3cf18.png)
+
+### Tamaño Mobile
+![image](https://user-images.githubusercontent.com/57992471/153250433-45d65be2-34d7-4a21-a85a-29cb57bb41fb.png)
+
+
 Proyecto de Vue Js, implementando la API de [Pokemon](https://pokeapi.co/)
 
 ## Project setup
