@@ -51,7 +51,7 @@
   </section>
 </template>
 <script>
-  import basicMixins from "../../mixins/axios";
+  import axios from "axios";
   import Loading from "../Loading/Loading.vue";
   import Footer from "../Footer/Footer.vue";
   import InputSearch from "../Search/Search.vue";
@@ -60,7 +60,6 @@
 
   export default {
     name: "PokemonListComponent",
-    mixins: [basicMixins],
     components: {
       Loading,
       Footer,
@@ -88,20 +87,20 @@
       this.getDataList();
     },
     methods: {
-      getDataList() {
-        this.$get("pokemon/")
-          .then((resp) => {
+      async getDataList() {
+        try {
+          this.$get("pokemon/").then((resp) => {
             const pokemones = resp.data.results;
             pokemones.forEach((item) => (item.isFavorite = false));
             this.pokemonesFiltered = pokemones;
             this.pokemonesList = pokemones;
-            setTimeout(() => {
-              this.isLoading = false;
-            }, 300);
-          })
-          .catch((err) => {
-            console.log("Error", err);
           });
+        } catch (error) {
+          console.log(error);
+        }
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 300);
       },
       changeFavorite(item) {
         this.pokemonesList[item.i].isFavorite =
@@ -147,16 +146,27 @@
       async getPokemonDetail(name) {
         this.dialog = true;
         this.isLoading = true;
-        const resp = await this.$get(`pokemon/${name}`);
-        if (resp) {
-          this.infoPoke = resp.data;
-          setTimeout(() => {
-            this.isLoading = false;
-          }, 1000);
+        try {
+          const resp = await this.$get(`pokemon/${name}`);
+          if (resp) {
+            this.infoPoke = resp.data;
+            setTimeout(() => {
+              this.isLoading = false;
+            }, 1000);
+          }
+        } catch (err) {
+          console.error(err);
         }
       },
       closeModal() {
         this.dialog = false;
+      },
+      $get(route) {
+        return axios.get("https://pokeapi.co/api/v2/" + route, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
       },
     },
   };

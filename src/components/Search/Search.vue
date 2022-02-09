@@ -11,5 +11,19 @@
     solo
   />
 </template>
-<script src="./Search.inf.js"></script>
+<script>
+  export default {
+    name: "InputSearch",
+    data() {
+      return {
+        buscarInp: "",
+      };
+    },
+    methods: {
+      filtrar() {
+        this.$emit("search", this.buscarInp);
+      },
+    },
+  };
+</script>
 <style lang="css" src="./Search.css"></style>

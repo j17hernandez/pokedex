@@ -52,6 +52,10 @@ This directory contains your Vuex store files. Creating a file in this directory
 
 This directory contains your application views
 
+### Tecnologías usadas
+
+`Vue js`, `Vuetify`, `Jest`, `SonarQube`, `axios`, `vue router `
+
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).

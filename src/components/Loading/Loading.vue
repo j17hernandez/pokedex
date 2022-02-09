@@ -9,5 +9,9 @@
     </v-container>
   </v-overlay>
 </template>
-<script src="./Loading.js"></script>
+<script>
+  export default {
+    name: "Loading",
+  };
+</script>
 <style lang="css" src="./Loading.css"></style>

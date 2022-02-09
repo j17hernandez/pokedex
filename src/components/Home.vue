@@ -35,7 +35,7 @@
 <style scoped>
   .title {
     /* font-size: 26px; */
-    font-family: "Lato", "Helvetica" !important;
+    font-family: Lato, Helvetica, Arial, Verdana, Tahoma, sans-serif !important;
     font-size: 46px;
     font-style: normal;
     font-weight: 700;

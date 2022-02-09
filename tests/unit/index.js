@@ -8,10 +8,7 @@ const $router = {
     push: jest.fn(),
 }
 
-config.mocks.$t = llave => llave
-
 config.mocks.$router = $router
-config.mocks.$i18n = llave => llave
 
 Vue.use(axios)
 Vue.config.productionTip = false;
