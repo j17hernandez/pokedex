@@ -18,6 +18,6 @@
 </script>
 <style scoped>
   .bg {
-    background: #e8e8e8;
+    background: #faf9f9 !important;
   }
 </style>

@@ -1,23 +1,36 @@
 export default {
-    name: "Footer",
-    mounted() {
-        this.cambioLista('todos')
+  name: "Footer",
+  data() {
+    return {
+      isAllActive: true,
+      isFavoriteActive: false,
+    }
+  },
+  mounted() {
+    this.cambioLista('all')
+  },
+  methods: {
+    cambioLista(lista) {
+      if (lista === 'all') {
+        this.isAllActive = true;
+        this.isFavoriteActive = false;
+      }
+      if (lista === 'favorite') {
+        this.isAllActive = false;
+        this.isFavoriteActive = true
+      }
+      this.$emit('seccion', lista)
     },
-    methods: {
-        cambioLista(lista) {
-            const todos = document.getElementById('todos')
-            const favoritos = document.getElementById('favoritos')
-            if (lista === 'todos') {
-                todos.style.background = '#f22539'
-                favoritos.style.background = 'rgb(104, 103, 103)'
-                this.$emit('listar', lista)
-            }
-            if (lista === 'favoritos') {
-                todos.style.background = 'rgb(104, 103, 103)'
-                favoritos.style.background = '#f22539'
-                this.$emit('listar', lista)
-            }
-
-        },
-    },
+    getColor(type) {
+      let color;
+      if (this.isAllActive && type == 'all') {
+        color = "#f22539"
+      } else if (this.isFavoriteActive && type == 'favorite') {
+        color = "#f22539"
+      } else {
+        color = "rgb(104, 103, 103)"
+      }
+      return color;
+    }
+  }
 }

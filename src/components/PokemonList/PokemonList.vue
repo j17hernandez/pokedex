@@ -5,81 +5,96 @@
       <v-row no-gutters>
         <v-spacer></v-spacer>
         <v-col cols="12" sm="12" md="6">
-          <Search></Search>
+          <InputSearch @search="searchByName($event)" />
         </v-col>
         <v-spacer></v-spacer>
       </v-row>
       <v-row no-gutters class="mb-4">
         <v-spacer></v-spacer>
-        <v-col cols="12" sm="12" md="6" lg="6">
-          <v-card width="100%" height="500px" style="overflow-y: auto">
-            <div>
-              <v-list width="100%" height="100%" two-line class="pt-0">
-                <template v-for="(pokemon, index) in pokemonesFiltered">
-                  <v-divider :key="pokemon.name"></v-divider>
-                  <v-list-item :key="index">
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        {{ pokemon.name }}
-                      </v-list-item-title>
-                    </v-list-item-content>
-                    <v-list-item-action>
-                      <v-btn @click="changeFavorite(pokemon, index)" icon>
-                        <v-icon
-                          :color="
-                            pokemon.isFavorite
-                              ? 'yellow'
-                              : 'color: rgb(104, 103, 103)'
-                          "
-                          >mdi-star-circle</v-icon
-                        >
-                      </v-btn>
-                    </v-list-item-action>
-                  </v-list-item>
-                </template>
-              </v-list>
-            </div>
-          </v-card>
+        <v-col cols="12" sm="12" md="6" lg="6" v-if="isAllActive">
+          <ListView
+            :items="pokemonesFiltered"
+            @changeFavorite="changeFavorite($event)"
+            @hideFooter="hideFooter($event)"
+            @getPokemon="getPokemonDetail($event)"
+            :counter="counter"
+          />
+        </v-col>
+        <v-col cols="12" sm="12" md="6" lg="6" v-if="isFavoriteActive">
+          <ListView
+            :items="favoriteListFiltered"
+            @changeFavorite="changeFavorite($event)"
+            @hideFooter="hideFooter($event)"
+            @getPokemon="getPokemonDetail($event)"
+            :counter="counter"
+          />
         </v-col>
         <v-spacer></v-spacer>
       </v-row>
-      <v-footer fixed>
-        <Footer></Footer>
+      <v-row>
+        <v-col>
+          <v-layout row justify-center>
+            <v-dialog v-model="dialog" max-width="500" persistent>
+              <ModalDetalle
+                :info-poke="infoPoke"
+                :pokemones-favorites="pokemonesFavoritos"
+                @close="closeModal"
+              />
+            </v-dialog>
+          </v-layout>
+        </v-col>
+      </v-row>
+      <v-footer v-show="!isActiveFooter" fixed>
+        <Footer @seccion="getSeccionList($event)" />
       </v-footer>
     </v-container>
   </section>
 </template>
 <script>
   import basicMixins from "../../mixins/axios";
-  import Loading from "@/components/Loading/Loading.vue";
+  import Loading from "../Loading/Loading.vue";
   import Footer from "../Footer/Footer.vue";
-  import Search from "../Search/Search.vue";
+  import InputSearch from "../Search/Search.vue";
+  import ListView from "../Common/List/ListView.vue";
+  import ModalDetalle from "../ModalDetalle/ModalDetalle.vue";
+
   export default {
     name: "PokemonListComponent",
     mixins: [basicMixins],
     components: {
       Loading,
       Footer,
-      Search,
+      InputSearch,
+      ListView,
+      ModalDetalle,
     },
     data() {
       return {
         isLoading: false,
+        isActiveFooter: false,
         pokemonesFiltered: [],
+        pokemonesList: [],
+        favoriteListFiltered: [],
+        pokemonesFavoritos: [],
+        dialog: false,
+        infoPoke: {},
+        isAllActive: true,
+        isFavoriteActive: false,
+        counter: 0,
       };
     },
     created() {
       this.isLoading = true;
-      this.getData();
+      this.getDataList();
     },
     methods: {
-      getData() {
+      getDataList() {
         this.$get("pokemon/")
           .then((resp) => {
             const pokemones = resp.data.results;
             pokemones.forEach((item) => (item.isFavorite = false));
             this.pokemonesFiltered = pokemones;
-            console.log();
+            this.pokemonesList = pokemones;
             setTimeout(() => {
               this.isLoading = false;
             }, 300);
@@ -88,10 +103,60 @@
             console.log("Error", err);
           });
       },
-      changeFavorite(item, i) {
-        this.pokemonesFiltered[i].isFavorite =
-          !this.pokemonesFiltered[i].isFavorite;
-        console.log(item, i);
+      changeFavorite(item) {
+        this.pokemonesList[item.i].isFavorite =
+          !this.pokemonesList[item.i].isFavorite;
+        this.favoriteListFiltered = this.pokemonesList.filter(
+          (poke) => poke.isFavorite === true
+        );
+        this.pokemonesFavoritos = this.favoriteListFiltered;
+      },
+      getSeccionList(list) {
+        if (list === "all") {
+          this.isAllActive = true;
+          this.isFavoriteActive = false;
+        }
+        if (list === "favorite") {
+          this.isAllActive = false;
+          this.isFavoriteActive = true;
+        }
+      },
+      searchByName(search) {
+        if (this.isAllActive) {
+          if (search !== null && search.length > 0) {
+            this.pokemonesFiltered = this.pokemonesList.filter((pokemon) =>
+              `${pokemon.name}`.toLowerCase().includes(search.toLowerCase())
+            );
+          } else {
+            this.pokemonesFiltered = this.pokemonesList;
+          }
+        }
+        if (this.isFavoriteActive) {
+          if (search !== null && search.length > 0) {
+            this.favoriteListFiltered = this.pokemonesFavoritos.filter((pok) =>
+              `${pok.name}`.toLowerCase().includes(search.toLowerCase())
+            );
+          } else {
+            this.favoriteListFiltered = this.pokemonesFavoritos;
+          }
+        }
+      },
+      hideFooter(val) {
+        this.isActiveFooter = val;
+      },
+      async getPokemonDetail(name) {
+        this.dialog = true;
+        this.isLoading = true;
+        const resp = await this.$get(`pokemon/${name}`);
+        if (resp) {
+          this.infoPoke = resp.data;
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 1000);
+        }
+      },
+      closeModal() {
+        this.dialog = false;
       },
     },
   };

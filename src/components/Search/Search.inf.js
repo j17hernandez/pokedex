@@ -1,5 +1,5 @@
 export default {
-  name: 'Buscador',
+  name: 'InputSearch',
   data() {
     return {
       buscarInp: '',
@@ -7,7 +7,7 @@ export default {
   },
   methods: {
     filtrar() {
-      this.$emit('filtro', this.buscarInp)
+      this.$emit('search', this.buscarInp)
     }
   },
 }

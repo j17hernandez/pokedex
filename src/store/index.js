@@ -6,19 +6,27 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isLoading: false,
-    pokemonList: [],
-    pokemonSelected: {},
+    pokemonesFiltered: [],
+    pokemonesList: [],
+    favoriteListFiltered: [],
+    pokemonesFavoritos: [],
   },
   mutations: {
     setIsLoading(state, data) {
       state.isLoading = data;
     },
-    setPokemonList(state, data) {
-      state.pokemonList = data;
+    setPokemonesFiltered(state, data) {
+      state.pokemonesFiltered = data;
     },
-    setPokemonSelected(state, data) {
-      state.pokemonSelected = data;
+    setPokemonesList(state, data) {
+      state.pokemonesList = data;
     },
+    setFavoriteListFiltered(state, data) {
+      state.favoriteListFiltered = data;
+    },
+    setPokemonesFavoritos(state, data) {
+      state.pokemonesFavoritos = data;
+    }
   },
   actions: {
   },

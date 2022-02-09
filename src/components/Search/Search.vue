@@ -6,8 +6,9 @@
     aria-label="Search"
     outlined
     dense
-    append-icon="mdi-magnify"
+    prepend-inner-icon="mdi-magnify"
     clearable
+    solo
   />
 </template>
 <script src="./Search.inf.js"></script>
