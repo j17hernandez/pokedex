@@ -56,6 +56,20 @@ This directory contains your application views
 
 `Vue js`, `Vuetify`, `Jest`, `SonarQube`, `axios`, `vue router `
 
+Para la instalación de SonarQube se puede realizar desde la imagen de docker
+[SonarQube](https://hub.docker.com/_/sonarqube?tab=tags)
+y seguir los pasos del siguiente [link](https://docs.sonarqube.org/latest/setup/get-started-2-minutes/)
+
+para la configuración sólo se debe editar el archivo que está en la raiz del proyecto, sonar.js
+
+```js
+    serverUrl: 'http://localhost:9000/',
+    token: 'tokenGeneradoPorSonar',
+
+```
+
+Quería implementar el store de Vue, pero dado que trabajo en el día y estudio de noche, no me quedó mucho tiempo, es por ello que estoy aplicando a esta oferta, porque quiero trabajar remoto, para poder tener un poco más de tiempo
+
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
