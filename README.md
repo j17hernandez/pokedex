@@ -76,8 +76,6 @@ para la configuración sólo se debe editar el archivo que está en la raiz del 
 
 ```
 
-Quería implementar el store de Vue, pero dado que trabajo en el día y estudio de noche, no me quedó mucho tiempo, es por ello que estoy aplicando a esta oferta, porque quiero trabajar remoto, para poder tener un poco más de tiempo
-
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
